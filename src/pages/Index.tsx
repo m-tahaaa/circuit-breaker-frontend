@@ -1,16 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
-import { HeroCarousel } from "@/components/HeroCarousel";
 import { SignInDialog } from "@/components/SignInDialog";
 import { SignUpDialog } from "@/components/SignUpDialog";
-import { TypeWriter } from "@/components/TypeWriter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Zap, Shield, BarChart3, Clock, Activity, Database, Gauge, Wifi } from "lucide-react";
+import carousel1 from "@/assets/carousel-1.jpg";
+import carousel2 from "@/assets/carousel-2.jpg";
+import carousel3 from "@/assets/carousel-3.jpg";
 
 const Index = () => {
   const [signInOpen, setSignInOpen] = useState(false);
   const [signUpOpen, setSignUpOpen] = useState(false);
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const typewriterText = "Reimagined";
+  const images = [carousel1, carousel2, carousel3];
+
+  // Typewriter effect
+  useEffect(() => {
+    if (currentIndex < typewriterText.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText((prev) => prev + typewriterText[currentIndex]);
+        setCurrentIndex((prev) => prev + 1);
+      }, 150);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex]);
+
+  // Carousel effect
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCarouselIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-hero">
@@ -20,10 +45,10 @@ const Index = () => {
       <main className="container mx-auto px-4 pt-24 pb-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
           <div className="space-y-6 animate-fade-in">
-            <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
+            <h1 className="text-5xl lg:text-6xl font-bold leading-[1.1]">
               Power Distribution
-              <span className="block bg-gradient-primary bg-clip-text text-transparent">
-                <TypeWriter text="Reimagined" delay={150} />
+              <span className="block bg-gradient-primary bg-clip-text text-transparent mt-2">
+                {displayedText}
               </span>
             </h1>
             <p className="text-xl text-muted-foreground">
@@ -40,7 +65,38 @@ const Index = () => {
           </div>
 
           <div className="animate-scale-in">
-            <HeroCarousel />
+            <div className="relative w-full h-[600px] overflow-hidden rounded-2xl">
+              {images.map((image, index) => (
+                <div
+                  key={index}
+                  className={`absolute inset-0 transition-opacity duration-1000 ${
+                    index === carouselIndex ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  <img
+                    src={image}
+                    alt={`Electricity distribution ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+                </div>
+              ))}
+
+              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3">
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCarouselIndex(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === carouselIndex
+                        ? "bg-primary w-8 shadow-glow"
+                        : "bg-muted hover:bg-muted-foreground"
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
