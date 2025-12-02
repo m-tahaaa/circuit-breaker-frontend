@@ -3,9 +3,10 @@ import { Header } from "@/components/Header";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { SignInDialog } from "@/components/SignInDialog";
 import { SignUpDialog } from "@/components/SignUpDialog";
+import { TypeWriter } from "@/components/TypeWriter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Zap, Shield, BarChart3, Clock } from "lucide-react";
+import { Zap, Shield, BarChart3, Clock, Activity, Database, Gauge, Wifi } from "lucide-react";
 
 const Index = () => {
   const [signInOpen, setSignInOpen] = useState(false);
@@ -22,7 +23,7 @@ const Index = () => {
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
               Power Distribution
               <span className="block bg-gradient-primary bg-clip-text text-transparent">
-                Reimagined
+                <TypeWriter text="Reimagined" delay={150} />
               </span>
             </h1>
             <p className="text-xl text-muted-foreground">
@@ -65,6 +66,26 @@ const Index = () => {
               icon: Clock,
               title: "24/7 Support",
               description: "Round-the-clock technical assistance when you need it",
+            },
+            {
+              icon: Activity,
+              title: "Load Balancing",
+              description: "Automatic load distribution for optimal grid performance",
+            },
+            {
+              icon: Database,
+              title: "Data Management",
+              description: "Centralized storage with instant access to historical data",
+            },
+            {
+              icon: Gauge,
+              title: "Performance Metrics",
+              description: "Comprehensive KPIs and efficiency tracking dashboards",
+            },
+            {
+              icon: Wifi,
+              title: "IoT Integration",
+              description: "Seamless connectivity with smart grid devices and sensors",
             },
           ].map((feature, index) => (
             <Card
